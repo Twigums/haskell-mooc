@@ -311,4 +311,12 @@ multiApp' gs target = (head gs) target : multiApp' (tail gs) target
 -- function, the surprise won't work. See section 3.8 in the material.
 
 interpreter :: [String] -> [String]
-interpreter commands = todo
+interpreter commands = interpreter' 0 0 commands []
+
+interpreter' x y [] res = reverse res
+interpreter' x y commands res = case head commands of "up" -> interpreter' x (y + 1) (tail commands) res
+                                                      "down" -> interpreter' x (y - 1) (tail commands) res
+                                                      "left" -> interpreter' (x - 1) y (tail commands) res
+                                                      "right" -> interpreter' (x + 1) y (tail commands) res
+                                                      "printX" -> interpreter' x y (tail commands) (show x : res)
+                                                      "printY" -> interpreter' x y (tail commands) (show y : res)
